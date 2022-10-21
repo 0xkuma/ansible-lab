@@ -1,5 +1,4 @@
 ---
-
 - name: Test the server connection
   hosts: server
   tasks:
@@ -9,3 +8,9 @@
     - name: Print message
       ansible.builtin.debug:
         msg: '{{ message }}'
+
+- name: Install pip
+  hosts: server
+  roles:
+    - role: pip
+      become: true
