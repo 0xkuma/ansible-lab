@@ -2,4 +2,4 @@
 - name: Install pip
   ansible.builtin.apt:
     name: python-pip
-    update-catch: true
+    update_cache: true
