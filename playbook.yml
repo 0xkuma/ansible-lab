@@ -14,3 +14,16 @@
   roles:
     - role: pip
       become: true
+
+- name: Install nvm
+  hosts: server
+  tasks:
+    - name: Download nvm
+      ansible.builtin.get_url:
+        url: https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.2/install.sh
+        dest: /tmp/install.sh
+        mode: 0755
+    - name: Install nvm
+      ansible.builtin.command: /tmp/install.sh
+      args:
+        creates: '{{ ansible_env.HOME }}/.nvm/nvm.sh'
