@@ -9,13 +9,13 @@
       ansible.builtin.debug:
         msg: '{{ message }}'
 
-- name: Install pip
-  hosts: server
-  roles:
-    - role: pip
-      become: true
+# - name: Install pip
+#   hosts: server
+#   roles:
+#     - role: pip
+#       become: true
 
-- name: Install nvm
+- name: Install nvm & NodeJS
   hosts: server
   tasks:
     - name: Download nvm
@@ -27,3 +27,22 @@
       ansible.builtin.command: /tmp/install.sh
       args:
         creates: '{{ ansible_env.HOME }}/.nvm/nvm.sh'
+
+- name: Install Nginx
+  hosts: server
+  tasks:
+    - name: Check if NGINX is installed
+      ansible.builtin.package_facts:
+        manager: 'auto'
+    - name: Install Nginx
+      ansible.builtin.package:
+        name: nginx
+        state: present
+      become: true
+      when: "'nginx' not in ansible_facts.packages"
+    - name: Start Nginx
+      ansible.builtin.service:
+        name: nginx
+        state: started
+        enabled: true
+      become: true
